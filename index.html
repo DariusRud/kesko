@@ -43,13 +43,12 @@
         const App = () => {
             const [activeEntity, setActiveEntity] = useState('KSL');
 
-            // Pagalbinė funkcija objektų kūrimui su ryšiais ir komentarais
             const mapSystems = (list) => list.map(item => {
                 if (typeof item === 'string') return { name: item, relations: "", comment: "" };
                 return { 
                     name: item.name, 
-                    relations: item.relations || item.comment || "", // Atgalinis suderinamumas
-                    comment: item.comment_only || "" 
+                    relations: item.relations || "",
+                    comment: item.comment || item.comment_only || "" 
                 };
             });
 
@@ -61,7 +60,7 @@
                     icon: "truck",
                     subdomains: [
                         { name: "Prekių kortelės (normatyvai)", systems: mapSystems([
-                            { name: "AX Prekių kortelės", relations: "Šaltinis PIM sistemai", comment_only: "Pagrindinė ERP dalis" },
+                            { name: "AX Prekių kortelės", relations: "Šaltinis PIM sistemai", comment: "Pagrindinė ERP dalis" },
                             "Instrukcijų sistema", 
                             "Prekių ženklinimo lipdukų sistema", 
                             "AX sertifikatai", 
@@ -92,7 +91,7 @@
                     subdomains: [
                         { name: "Klientai, sutartys, kreditai", systems: mapSystems(["AX Klientų kortelės", "AX Klientų sutartys", "AX Klientų kreditai"]) },
                         { name: "B2B pardavimai - urmas", systems: mapSystems([
-                            { name: "AX Pardavimų modulis", relations: "Gauna užsakymus iš KSD OMS", comment_only: "B2B šerdis" },
+                            { name: "AX Pardavimų modulis", relations: "Gauna užsakymus iš KSD OMS", comment: "B2B šerdis" },
                             "AX Tiesioginis pristatymas", 
                             "ESF (Elektroninių sąskaitų faktūrų) programa", 
                             "Komercinių pasiūlymų sistema (KOMPAS)", 
@@ -103,7 +102,7 @@
                             "CommerceAPI"
                         ]) },
                         { name: "Pardavimai franšizėms", systems: mapSystems(["FP Rivilė", "PUPI (prekių užsakymas per internetą) programa", "Firminių prekių užsakymų valdymo programa (FPAU)"]) },
-                        { name: "Pardavimai Eshop / LV / EE", systems: mapSystems(["AX Pardavimų modulis (Eshop)", { name: "Integracija su KSD www.e-senukai.lt", relations: "Per Digital Hub", comment_only: "" }, "AX Pardavimų modulis (LV/EE)"]) },
+                        { name: "Pardavimai Eshop / LV / EE", systems: mapSystems(["AX Pardavimų modulis (Eshop)", { name: "Integracija su KSD www.e-senukai.lt", relations: "Per Digital Hub", comment: "" }, "AX Pardavimų modulis (LV/EE)"]) },
                         { name: "Kainodara / Akcijos / Lojalumas", systems: mapSystems(["AX LT Pardavimų kainodaros valdymas", "AX Akcijų valdymas", "AX Pardavimų grąžinimai", "Rivilė: Lojalumo modulis", "AX Lojalumo modulis", "Dovanų kortelės"]) }
                     ]
                 }
@@ -117,8 +116,8 @@
                     icon: "truck",
                     subdomains: [
                         { name: "Prekių duomenų valdymas", systems: mapSystems([
-                            { name: "PIM", relations: "Iš AX ERP", comment_only: "Prekių info Master" },
-                            { name: "DAM", relations: "Iš Contentful", comment_only: "Nuotraukų saugykla" }
+                            { name: "PIM", relations: "Iš AX ERP (KSL/LV/EE)", comment: "Prekių info Master" },
+                            { name: "DAM", relations: "Iš Contentful", comment: "Nuotraukų saugykla" }
                         ]) }
                     ]
                 },
@@ -128,13 +127,14 @@
                     icon: "shopping",
                     subdomains: [
                         { name: "E-commerce platforma", systems: mapSystems([
-                            { name: "Next.js Web Platform", relations: "Per Digital Hub API", comment_only: "Frontend" },
-                            { name: "Contentful (CMS)", relations: "Integruota su DAM", comment_only: "Turinys" }
+                            { name: "Next.js Web Platform", relations: "Per Digital Hub API", comment: "Frontend" },
+                            { name: "Contentful (CMS)", relations: "Integruota su DAM", comment: "Turinys" }
                         ]) },
                         { name: "Kliento duomenys ir Lojalumas", systems: mapSystems([
-                            { name: "Customer Hub", relations: "Ryšys su Storefront", comment_only: "Kliento profilis" },
-                            { name: "Lojalumo sistema (Loyalty)", relations: "Integruota su Customer Hub", comment_only: "Skaitmeninis lojalumas" }
-                        ]) }
+                            { name: "Customer Hub", relations: "Per Digital Hub", comment: "Vieningas kliento profilis" },
+                            { name: "Lojalumo sistema (Loyalty)", relations: "Integruota su Hub", comment: "Skaitmeninis lojalumas" }
+                        ]) },
+                        { name: "Analitika", systems: mapSystems(["Google Analytics", "Hotjar", "GTM"]) }
                     ]
                 },
                 {
@@ -143,8 +143,8 @@
                     icon: "package",
                     subdomains: [
                         { name: "Užsakymų valdymas", systems: mapSystems([
-                            { name: "OMS", relations: "Į Elfas ir AX ERP", comment_only: "Orkestravimas" },
-                            { name: "Elfas", relations: "Užsakymų vykdymas", comment_only: "Kontrolė" }
+                            { name: "OMS", relations: "Į Elfas ir Šalių AX ERP", comment: "Orkestravimas" },
+                            { name: "Elfas", relations: "Užsakymų vykdymas", comment: "Kontrolė" }
                         ]) }
                     ]
                 },
@@ -154,15 +154,73 @@
                     icon: "zap",
                     subdomains: [
                         { name: "Middleware sluoksnis", systems: mapSystems([
-                            { name: "Digital Hub", relations: "Tiltas KSD <-> KSL", comment_only: "API Gateway" }
+                            { name: "Digital Hub", relations: "Tiltas KSD <-> KSL/LV/EE", comment: "Centrinis API Gateway" }
                         ]) }
                     ]
                 }
             ];
 
-            // KSLV ir KSEE
-            const kslvInventory = [];
-            const kseeInventory = [];
+            // KSLV - Latvija
+            const kslvInventory = [
+                {
+                    domain: "IT SUPPLYCHAIN (Tiekimas)",
+                    color: "bg-blue-600",
+                    icon: "truck",
+                    subdomains: [
+                        { name: "Prekių valdymas", systems: mapSystems([
+                            { name: "AX ERP LV", relations: "Shared Core su KSL", comment: "Tiekimo grandinės valdymas" },
+                            "Vietinės instrukcijos LV"
+                        ]) }
+                    ]
+                },
+                {
+                    domain: "LOGISTIKA (Sandėliai / Pristatymas)",
+                    color: "bg-indigo-600",
+                    icon: "package",
+                    subdomains: [
+                        { name: "Sandėlių valdymas", systems: mapSystems(["AX Inventory LV", "Vietinės integracijos LV"]) },
+                        { name: "Pristatymas", systems: mapSystems(["Omniva LV", "Latvijas Pasts", "Venipak LV"]) }
+                    ]
+                },
+                {
+                    domain: "IT SUPPORT (Finansai & HR)",
+                    color: "bg-slate-700",
+                    icon: "wallet",
+                    subdomains: [
+                        { name: "Finansai", systems: mapSystems([{ name: "AX Finansai LV", relations: "Local integrations", comment: "Mokesčiai ir apskaita" }]) }
+                    ]
+                }
+            ];
+
+            // KSEE - Estija
+            const kseeInventory = [
+                {
+                    domain: "IT SUPPLYCHAIN (Tiekimas)",
+                    color: "bg-blue-600",
+                    icon: "truck",
+                    subdomains: [
+                        { name: "Prekių valdymas", systems: mapSystems([
+                            { name: "AX ERP EE", relations: "Shared Core su KSL", comment: "K-Rauta specifika" }
+                        ]) }
+                    ]
+                },
+                {
+                    domain: "LOGISTIKA (Sandėliai / Pristatymas)",
+                    color: "bg-indigo-600",
+                    icon: "package",
+                    subdomains: [
+                        { name: "Logistikos tinklas", systems: mapSystems(["Omniva EE", "SmartPost Itella", "DPD EE"]) }
+                    ]
+                },
+                {
+                    domain: "IT SUPPORT (Finansai & HR)",
+                    color: "bg-slate-700",
+                    icon: "wallet",
+                    subdomains: [
+                        { name: "Finansai", systems: mapSystems([{ name: "AX Finansai EE", relations: "Local integrations", comment: "E-invoice integracijos" }]) }
+                    ]
+                }
+            ];
 
             const inventoryMap = {
                 KSL: kslInventory,
