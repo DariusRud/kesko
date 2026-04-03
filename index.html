@@ -38,7 +38,8 @@
                 cpu: <React.Fragment><rect width="16" height="16" x="4" y="4" rx="2"/><path d="M9 9h6v6H9zM9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 15h3M1 9h3M1 15h3"/></React.Fragment>,
                 lock: <path d="M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zM7 11V7a5 5 0 0 1 10 0v4" />,
                 mail: <React.Fragment><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="m22 6-10 7L2 6"/></React.Fragment>,
-                store: <React.Fragment><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z"/><path d="M9 22V12h6v10"/></React.Fragment>
+                store: <React.Fragment><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z"/><path d="M9 22V12h6v10"/></React.Fragment>,
+                barChart: <path d="M18 20V10M12 20V4M6 20v-6" />
             };
             return (
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -61,14 +62,14 @@
                     setIsAuthenticated(true);
                     setError('');
                 } else {
-                    setError('Bandykite dar kartą.');
+                    setError('Neteisingas kodas.');
                     setPassword('');
                 }
             };
 
             const sys = (name, stack, rel, comm, team) => ({ name, stack, relations: rel, comment: comm, itTeam: team });
 
-            // --- KSL (LIETUVA) - PILNAS ATSTATYMAS ---
+            // --- KSL (LIETUVA) - ABSOLIUTUS ATSTATYMAS ---
             const kslInventory = [
                 {
                     domain: "IT SUPPLYCHAIN (TIEKIMAS & PRODUKTAI)",
@@ -97,14 +98,14 @@
                     icon: "package",
                     subdomains: [
                         { name: "UŽSAKYMŲ VYKDYMAS", systems: [
-                            sys("Yolandi (Homebrew ERP)", "MySQL; Amazon S3", "Sync su SAP, BillGates", "Orkestruoja užsakymus šalyse", "IT SUPPLYCHAIN"),
+                            sys("Yolandi (Homebrew ERP)", "MySQL; Amazon S3", "Sync su SAP, BillGates", "Orkestruoja užsakymus šalyse", "IT OPERATIONS"),
                             sys("Cerberus", "Ruby on Rails; Postgres", "Iš Yolandi", "Parduotuvių darbuotojų įrankis", "IT SUPPLYCHAIN"),
                             sys("OMS", "Service", "Integracija su Yolandi", "Orkestravimas", "IT SUPPLYCHAIN"),
                             sys("3PL / Courier services", "Integrations", "Per Yolandi", "Pristatymo valdymas", "IT SUPPLYCHAIN")
                         ]},
                         { name: "WMS / SIUNTOS", systems: [
-                            sys("KSLT WMS", "RedPrairie / Equinox", "Iš Yolandi", "Sandėlio operacijų optimizavimas", "IT SUPPLYCHAIN"),
-                            sys("Hermes", "Ruby on Rails; MySQL", "Kurjerių integracijos", "Lipdukai, paletės, kurjerių foto", "IT LOGISTICS"),
+                            sys("KSLT WMS", "RedPrairie / Equinox", "Iš Yolandi", "Sandėlio operacijų optimizavimas", "IT WMS"),
+                            sys("Hermes", "Ruby on Rails; MySQL", "Kurjerių integracijos", "Siuntų valdymas, lipdukai, foto", "IT LOGISTICS"),
                             sys("Bralukai", "Ruby Gem", "AMQPS integracija", "Abstrakcija darbui su SmartBear", "IT LOGISTICS")
                         ]}
                     ]
@@ -115,28 +116,46 @@
                     icon: "store",
                     subdomains: [
                         { name: "MAŽMENOS SISTEMOS", systems: [
-                            sys("KSLT DUV", "Store Tool", "AX Projektas", "Picking, packing, collection", "IT SHOP"),
-                            sys("[KSLT] POS", "Point of Sale", "Callbacks į Yolandi", "Pardavimo taškai", "IT SHOP"),
+                            sys("KSLT DUV", "Store Tool", "AX Projektas", "Picking, packing, collection", "IT STORE"),
+                            sys("[KSLT] POS", "Point of Sale", "Callbacks į Yolandi", "Pardavimo taškų sistema", "IT SHOP"),
                             sys("RASO POS", "Hardware/SW", "Retail", "Kasų sistemos parduotuvėse", "IT SHOP"),
                             sys("FP Rivilės POS", "Legacy", "Sync su ERP", "Senoji kasų sistema", "IT SHOP"),
                             sys("WORKOFO", "SaaS", "Internal", "Darbo grafikų planavimas", "IT SHOP"),
                             sys("Kainoženklių programa", "Label Tool", "Iš Aikido", "Etikečių spausdinimas", "IT SHOP"),
-                            sys("Lizingas", "External", "Integracija", "Paslaugos parduotuvėse", "IT SHOP")
+                            sys("Lizingas / Nuoma", "External", "Integracija", "Paslaugos parduotuvėse", "IT SHOP")
                         ]}
                     ]
                 },
                 {
-                    domain: "IT SUPPORT (FINANSAI & CRM)",
+                    domain: "IT SUPPORT (FINANSAI, HR & ANALITIKA)",
                     color: "bg-slate-700",
                     icon: "wallet",
                     subdomains: [
-                        { name: "FINANSAI & CRM", systems: [
-                            sys("BillGates", "Fin Gateway", "Bankai <-> Yolandi", "Mokėjimų detalizavimas", "IT SUPPORT"),
-                            sys("Salesforce Service Cloud", "CRM", "Iš Yolandi", "Klientų aptarnavimas", "IT SUPPORT"),
-                            sys("Loyalty (Middleware)", "Middleware", "KSLT <-> Zinrelo", "Lojalumo integracijos", "IT SUPPORT"),
-                            sys("[KSLT] Loyalty (Rivilė)", "Legacy", "Iš Elfas", "Senas taškų modulis", "IT SUPPORT"),
-                            sys("ft-strawberry", "Ruby on Rails", "Raspberry Pi", "Cloud printing tinklas", "IT SUPPORT"),
-                            sys("RPA", "Automation", "Integracija su POS", "Automatizuoti mokėjimai", "IT SUPPORT")
+                        { name: "FINANSAI & APSKAITA", systems: [
+                            sys("AX Finansai", "ERP Core", "Internal", "Pagrindinis finansų modulis", "IT SUPPORT"),
+                            sys("Rivilė: Biudžetų valdymas", "Legacy", "Internal", "Biudžetų valdymo modulis", "IT SUPPORT"),
+                            sys("AX Finansinės dimensijos", "ERP Core", "Internal", "DK žurnalai, naujos finansinės dimensijos", "IT SUPPORT"),
+                            sys("PPO", "Tools", "Internal", "Periodo pabaigos operacijos", "IT SUPPORT"),
+                            sys("AX Ilgalaikis turtas", "ERP Core", "Internal", "Turto valdymas", "IT SUPPORT"),
+                            sys("AX Mokėjimai", "ERP Core", "Bankai/Tiekėjai", "Mokėjimų valdymas (Bankai, Tiekėjai, Klientai)", "IT SUPPORT"),
+                            sys("BillGates", "Fin Gateway", "Bankai <-> Yolandi", "Mokėjimų detalizavimo procesorius", "IT FINANCE")
+                        ]},
+                        { name: "ANALITIKOS ĮRANKIAI", systems: [
+                            sys("FA Finansinių duomenų analitika", "BI", "Internal", "Finansų duomenų gilioji analizė", "IT SUPPORT"),
+                            sys("BI, OLAP Cube (V1)", "Analysis", "Data Warehouse", "OLAP kubas (>30 įrankių, naudot. sk. > 300)", "IT SUPPORT"),
+                            sys("BI, OLAP Cube (V2)", "Analysis", "Data Warehouse", "OLAP kubas (>80 įrankių, naudot. sk. > 1200)", "IT SUPPORT"),
+                            sys("BI, OLAP Cube (V3)", "Analysis", "Data Warehouse", "OLAP kubas (>100 įrankių, naudot. sk. > 1000)", "IT SUPPORT"),
+                            sys("Qlik Sense (BI)", "Analysis", "Internal", "Vizualinė duomenų analitika", "IT SUPPORT"),
+                            sys("Graf10 programa", "Analysis", "Internal", "Specializuota analizės programa", "IT SUPPORT")
+                        ]},
+                        { name: "HR & ADMINISTRACIJA", systems: [
+                            sys("Kadrai", "HR Tool", "Internal", "Personalo valdymas", "IT SUPPORT"),
+                            sys("Rivilė: Algų valdymas", "Legacy", "Internal", "Darbo užmokesčio modulis", "IT SUPPORT"),
+                            sys("TeamTailor / SPAIS", "SaaS", "Internal", "Atrankų valdymo sistema", "IT SUPPORT"),
+                            sys("Moodle", "LMS", "Internal", "Mokymų sistema (integracija)", "IT SUPPORT"),
+                            sys("keskosenukai.com", "Web", "Public", "Korporatyvinė svetainė", "IT SUPPORT"),
+                            sys("Intranetas", "Web", "Internal", "Vidinis komunikacijos portalas", "IT SUPPORT"),
+                            sys("TIAK", "Tools", "Internal", "Turto inventorizacijos atlikimo kaupiklių programa", "IT SUPPORT")
                         ]}
                     ]
                 }
@@ -165,7 +184,7 @@
                         { name: "MONOLITAS & CORE", systems: [
                             sys("SmartBear", "PHP Custom; Postgres", "Į KSD AX", "Asortimentas, pirkimai, grąžinimai", "IT KSD"),
                             sys("ElasticPath", "Commerce Engine", "Core", "Komercijos logika", "IT KSD"),
-                            sys("Akeneo (PIM)", "Data", "Iš AX ERP", "Prekių info valdymas", "IT KSD"),
+                            sys("Akeneo (PIM)", "Data", "Iš AX ERP", "Prekių info valdymas KSD", "IT KSD"),
                             sys("KSD AX", "Accounting", "Iš SmartBear", "Galutinė apskaitos stotelė", "IT KSD")
                         ]},
                         { name: "PARTNERIAI", systems: [
@@ -188,7 +207,7 @@
                 }
             ];
 
-            // --- KSLV / KSEE (LATVIJA & ESTIJA) ---
+            // --- KSLV / KSEE - LATVIJA IR ESTIJA ---
             const clusterInventory = (countryName) => [
                 {
                     domain: "IT SUPPLYCHAIN & OPERATIONS",
@@ -197,7 +216,7 @@
                     subdomains: [
                         { name: "ERP BRANDUOLYS", systems: [
                             sys("SAP (Kesko Group ERP)", "ABAP / HANA", "Sync: Yolandi", `Pagrindinė sistema ${countryName}`, "KESKO IT"),
-                            sys("Yolandi", "MySQL", "Integracija su SAP", "Užsakymų srauto valdymas", "IT OPERATIONS")
+                            sys("Yolandi", "MySQL", "Integracija su SAP", "Užsakymų srauto valdymas tarp šalių", "IT OPERATIONS")
                         ]}
                     ]
                 },
@@ -253,18 +272,18 @@
                                 {Object.keys(inventoryMap).map(entity => (
                                     <button
                                         key={entity} onClick={() => setActiveEntity(entity)}
-                                        className={`px-8 py-3 rounded-lg font-black text-sm transition-all ${activeEntity === entity ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                                        className={`px-8 py-3 rounded-lg font-black text-sm transition-all ${activeEntity === entity ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-400 hover:bg-slate-600'}`}
                                     >
                                         {entity}
                                     </button>
                                 ))}
                             </div>
-                            <button onClick={() => setIsAuthenticated(false)} className="px-4 text-[10px] font-black text-slate-300 uppercase hover:text-red-500">Atsijungti</button>
+                            <button onClick={() => setIsAuthenticated(false)} className="px-4 text-[10px] font-black text-slate-300 uppercase hover:text-red-500 transition-colors">Atsijungti</button>
                         </header>
 
                         <div className="mb-10">
                             <h1 className="text-4xl font-black uppercase tracking-tighter text-slate-800">{activeEntity} IT Inventorizacija</h1>
-                            <p className="text-slate-500 text-sm font-medium border-l-4 border-blue-600 pl-4 py-1 mt-2">Pilnas AS-IS sistemų sąrašas</p>
+                            <p className="text-slate-500 text-sm font-medium border-l-4 border-blue-600 pl-4 py-1 mt-2">Pilnas AS-IS sistemų sąrašas (Nieko neapjungta)</p>
                         </div>
 
                         <div className="space-y-16">
@@ -292,7 +311,7 @@
                                                         {sub.systems.map((sys, sysIdx) => (
                                                             <tr key={`${sidx}-${sysIdx}`} className="hover:bg-blue-50/20 transition-colors group">
                                                                 <td className="px-6 py-4 align-top border-r border-slate-50">
-                                                                    <div className={`text-[10px] font-black uppercase ${sysIdx === 0 ? 'text-blue-600' : 'text-slate-300'}`}>{sub.name}</div>
+                                                                    <div className={`text-[10px] font-black uppercase ${sysIdx === 0 ? 'text-blue-600 bg-blue-50 px-2 py-1 rounded inline-block' : 'text-slate-300'}`}>{sub.name}</div>
                                                                 </td>
                                                                 <td className="px-6 py-4 align-top border-r border-slate-50">
                                                                     <span className="text-[12px] font-bold text-slate-800 leading-tight">{sys.name}</span>
