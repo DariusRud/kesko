@@ -31,7 +31,7 @@
                 list: <path d="M16 6h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2M9 3h6a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1" />,
                 layout: <React.Fragment><rect width="18" height="18" x="3" y="3" rx="2" /><path d="M3 9h18M9 21V9" /></React.Fragment>,
                 zap: <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" />,
-                layers: <path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.1 6.27a1 1 0 0 0 0 1.83l9.07 4.09a2 2 0 0 0 1.66 0l9.07-4.09a1 1 0 0 0 0-1.83ZM2.1 12.07l9.07 4.09a2 2 0 0 0 1.66 0l9.07-4.09M2.1 16.07l9.07 4.09a2 2 0 0 0 1.66 0l9.07-4.09" />
+                layers: <path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.1 6.27a1 1 0 0 0 0 1.83l9.07 4.09a2 2 0 0 0 1.66 0l9.07-4.09a1 1 0 0 0 0-1.83ZM2.1 12.07l9.07 4.09a2 2 0 0 0 1.66 0l9.07-4.09M2.1 16.07l9.07 4.09a2 2 0 0 0-1.66 0l9.07-4.09" />
             };
             return (
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -49,10 +49,12 @@
                     color: "bg-blue-600",
                     icon: "truck",
                     subdomains: [
-                        { name: "Prekių kortelės & Normatyvai", systems: ["AX Prekių kortelės", "Instrukcijų sistema", "Prekių ženklinimo lipdukų sistema", "AX sertifikatai", "Sertifikatų programa", "AX Atlas", "Aikido integracija"] },
-                        { name: "Asortimentas & Tiekėjai", systems: ["AVS", "AX Tiekėjų kortelės", "AX Tiekėjų sutarčių valdymas", "SSK (nuolaidų kontrolė)", "GPAIS"] },
-                        { name: "Pirkimai & Atsargos", systems: ["AX Pirkimų užsakymai", "AX Perkėlimo užsakymai", "AX Atsargų valdymas", "AX Atsargų inventorizacija", "Gamyba (fasavimas)"] },
-                        { name: "Kokybės valdymas", systems: ["AX garantinio sistema", "Garantinio sistema (GRP)", "Pažeidimų sistema", "Pretenzijų sistema", "Tiekimo ataskaitos"] }
+                        { name: "Prekių kortelės (normatyvai)", systems: ["AX Prekių kortelės", "Instrukcijų sistema", "Prekių ženklinimo lipdukų sistema", "AX sertifikatai", "Sertifikatų programa", "AX Atlas", "Aikido integracija"] },
+                        { name: "Asortimento valdymas", systems: ["AVS"] },
+                        { name: "Tiekėjai, sutartys", systems: ["AX Tiekėjų kortelės", "AX Tiekėjų sutarčių valdymas", "SSK: Tiekimo sutarčių sąlygų sekimo ir nuolaidų kontrolės programa"] },
+                        { name: "Prekių tiekimas", systems: ["Cross-docking", "KANBAN", "AX Pirkimų užsakymai", "AX Perkėlimo užsakymai", "Tiekimo ataskaitos"] },
+                        { name: "Prekių tiekimas (kokybės valdymas)", systems: ["AX garantinio sistema", "Garantinio sistema (GRP)", "Pažeidimų sistema", "Pretenzijų sistema"] },
+                        { name: "Atsargų valdymas", systems: ["AX Atsargų valdymas", "AX Atsargų inventorizacija", "Gamyba (fasavimas)", "GPAIS", "Sen2004 Sezoniniai požymiai"] }
                     ]
                 },
                 {
@@ -60,8 +62,8 @@
                     color: "bg-indigo-600",
                     icon: "package",
                     subdomains: [
-                        { name: "Sandėlių valdymas", systems: ["Sandėlių valdymo sistemos (SVS JDA)", "3PL SVS ir integracijos", "AVP (Aikštelių valdymas)", "KVP (Krovinių valdymas)", "AX Krovinių valdymas", "Fleet Complet"] },
-                        { name: "Transportas & Kurjeriai", systems: ["TMS (Maršrutizavimas)", "Logixis (Valdymas)", "TSVS (Konkursavimas)", "DPD lipdukų aplikacija", "KSL Kurjerių sistema", "IVAZ"] }
+                        { name: "Sandėlių valdymas", systems: ["Sandėlių valdymo sistemos (SVS JDA)", "3PL SVS ir integracijos", "Aikštelių valdymo sistema (AVP)", "Krovinių valdymo sistema (KVP)", "AX Krovinių valdymo sistema", "Kiemo valdymo sistema (Fleet Complet)"] },
+                        { name: "Logistika (transportas)", systems: ["Transporto maršrutizavimo sistema (TMS)", "Transporto valdymo sistema (Logixis)", "TSVS konkursavimo programa", "DPD lipdukų spausdinimo aplikacija", "KSL Kurjerių valdymo sistema", "IVAZ"] }
                     ]
                 },
                 {
@@ -69,10 +71,11 @@
                     color: "bg-green-600",
                     icon: "shopping",
                     subdomains: [
-                        { name: "Klientai & Sutartys", systems: ["AX Klientų kortelės", "AX Klientų sutartys", "AX Klientų kreditai", "CRM", "CommerceAPI"] },
-                        { name: "Pardavimai & Didmena", systems: ["AX Pardavimų modulis", "AX Tiesioginis pristatymas", "ESF programa", "KOMPAS", "EDI Pardavimai", "Spec. užsakymai", "SABIS"] },
-                        { name: "Franšizės & E-Shop integracija", systems: ["FP Rivilė", "PUPI (Užsakymai per internetą)", "FPAU (Firminės prekės)", "Integracija su KSD (e-senukai.lt)", "Dovanų kortelės"] },
-                        { name: "Kainodara & Akcijos", systems: ["AX LT Pardavimų kainodara", "AX Akcijų valdymas", "AX Pardavimų grąžinimai"] }
+                        { name: "Klientai, sutartys, kreditai", systems: ["AX Klientų kortelės", "AX Klientų sutartys", "AX Klientų kreditai"] },
+                        { name: "B2B pardavimai - urmas", systems: ["AX Pardavimų modulis", "AX Tiesioginis pristatymas", "ESF (Elektroninių sąskaitų faktūrų) programa", "Komercinių pasiūlymų sistema (KOMPAS)", "EDI Pardavimai", "CRM", "Spec. užsakymai", "SABIS", "CommerceAPI"] },
+                        { name: "Pardavimai franšizėms", systems: ["FP Rivilė", "PUPI (prekių užsakymas per internetą) programa", "Firminių prekių užsakymų valdymo programa (FPAU)"] },
+                        { name: "Pardavimai Eshop / LV / EE", systems: ["AX Pardavimų modulis (Eshop)", "Integracija su KSD www.e-senukai.lt", "AX Pardavimų modulis (LV/EE)"] },
+                        { name: "Kainodara / Akcijos / Lojalumas", systems: ["AX LT Pardavimų kainodaros valdymas", "AX Akcijų valdymas", "AX Pardavimų grąžinimai", "Rivilė: Lojalumo modulis", "AX Lojalumo modulis", "Dovanų kortelės"] }
                     ]
                 },
                 {
@@ -80,9 +83,9 @@
                     color: "bg-orange-600",
                     icon: "globe",
                     subdomains: [
-                        { name: "Pardavimo taškai (POS)", systems: ["RASO POS", "FP Rivilės POS", "ESF savitarnos terminalas MP"] },
-                        { name: "Mažmenos valdymas", systems: ["DUV", "WORKOFO (Darbo grafikai)", "Kainoženklių programa", "Spaceman (Lentynų valdymas)"] },
-                        { name: "Paslaugos", systems: ["Prekės informacija", "Įrankių nuomos sistema", "Gamyba (sveriamos prekės)", "Lizingas"] }
+                        { name: "Pardavimai mažmenoje (POS)", systems: ["RASO POS", "FP Rivilės POS"] },
+                        { name: "Mažmenos valdymas", systems: ["DUV", "Mažmenos darbo grafikai (WORKOFO)", "Kainoženklių programa", "Lentynų valdymo sistema (Spaceman)"] },
+                        { name: "Paslaugos klientams", systems: ["Prekės informacija", "Įrankių nuomos sistema", "Gamyba (sveriamos prekės)", "Lizingas", "Trečių šalių paslaugų apskaita per POS", "ESF savitarnos terminalas MP"] }
                     ]
                 },
                 {
@@ -90,9 +93,9 @@
                     color: "bg-slate-700",
                     icon: "wallet",
                     subdomains: [
-                        { name: "Finansai & Apskaita", systems: ["AX Finansai", "Rivilė: Biudžetų valdymas", "PPO", "FA Analitika", "AX Ilgalaikis turtas", "AX Mokėjimai", "ISAF / PVM / Intrastat", "Bank Gateways"] },
-                        { name: "HR & Analitika", systems: ["Kadrai", "Rivilė: Algų valdymas", "TeamTailor / SPAIS", "Moodle integracija", "BI / OLAP Cube", "Qlik Sense", "Graf10", "TIAK"] },
-                        { name: "Palaikomieji procesai", systems: ["DocLogix (DVS)", "iTOP (Paslaugų tarnyba)", "Keskosenukai.com", "Intranetas"] }
+                        { name: "Finansai & Apskaita", systems: ["AX Finansai", "Rivilė: Biudžetų valdymo modulis", "AX Finansinės dimensijos", "PPO (periodo pabaigos operacijos)", "FA Finansinių duomenų analitika", "AX Ilgalaikis turtas", "AX Mokėjimai (Bankai, Tiekėjai, Klientai)", "Parama", "Trečių šalių turto apskaita", "Intrastat / PVM / ISAF", "Skolos, sudengimai, kredito limitų sutartys", "Akredityvai, forward'ai, valiutų valdymas", "Bank Gateways"] },
+                        { name: "Personalo valdymas & HR", systems: ["Kadrai", "Rivilė: Algų valdymo modulis", "Atrankų valdymo sistema (TeamTailor, SPAIS)", "Moodle (integracija)", "Darbuotojų prašymų lapeliai", "Kadrų sinchronizacija su AD"] },
+                        { name: "Analitika & Palaikymas", systems: ["BI, OLAP Cube", "Qlik Sense (BI)", "Graf10 programa", "TIAK (Turto inventorizacija)", "Prek_obj_new ataskaita", "Dokumentų valdymo sistema (DVS) DocLogix", "Paslaugų tarnyba iTOP", "Korporatyvinė svetainė", "Intranetas", "Kesko integracija (LV/EE)"] }
                     ]
                 }
             ];
@@ -103,8 +106,8 @@
                     color: "bg-cyan-600",
                     icon: "layout",
                     subdomains: [
-                        { name: "Platformos & CMS", systems: ["Pildysime pagal tavo info..."] },
-                        { name: "Analitika & Track'ing", systems: ["Pildysime pagal tavo info..."] }
+                        { name: "E-commerce platforma", systems: ["Next.js Web Platform", "Mobile App (iOS/Android)", "Contentful (CMS)"] },
+                        { name: "Analitika & Track'ing", systems: ["Google Tag Manager", "Hotjar / Analytics"] }
                     ]
                 },
                 {
@@ -112,7 +115,7 @@
                     color: "bg-purple-600",
                     icon: "zap",
                     subdomains: [
-                        { name: "Microservices & APIs", systems: ["Pildysime pagal tavo info..."] }
+                        { name: "Microservices", systems: ["Product API", "Checkout API", "User / Profile API", "Search Service (Algolia)", "Pricing & Promo Service"] }
                     ]
                 },
                 {
@@ -120,7 +123,7 @@
                     color: "bg-pink-600",
                     icon: "layers",
                     subdomains: [
-                        { name: "Produktų valdymas", systems: ["Pildysime pagal tavo info..."] }
+                        { name: "Produktų valdymas", systems: ["PIM (Product Info Management)", "DAM (Digital Assets)", "Akeneo", "Translation Service"] }
                     ]
                 }
             ];
@@ -160,7 +163,7 @@
                             </p>
                         </div>
 
-                        <div className="space-y-8">
+                        <div className="space-y-12">
                             {currentInventory.map((item, idx) => (
                                 <section key={idx} className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                                     <div className={`${item.color} p-4 text-white flex items-center gap-3`}>
@@ -169,22 +172,37 @@
                                         </div>
                                         <h2 className="font-black uppercase text-sm tracking-wide">{item.domain}</h2>
                                     </div>
-                                    <div className="p-6 bg-white grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        {item.subdomains.map((sub, sidx) => (
-                                            <div key={sidx} className="group">
-                                                <h3 className="text-[10px] font-black text-slate-400 uppercase mb-3 flex items-center gap-2 border-b border-slate-100 pb-2 tracking-widest">
-                                                    <Icon name="list" className="w-3 h-3 text-blue-400" /> {sub.name}
-                                                </h3>
-                                                <ul className="space-y-2">
-                                                    {sub.systems.map((sys, sysIdx) => (
-                                                        <li key={sysIdx} className="text-xs font-bold text-slate-700 flex items-center gap-3 bg-slate-50/50 p-2 rounded-lg border border-transparent hover:border-blue-100 hover:bg-blue-50/30 transition-all">
-                                                            <div className="w-1.5 h-1.5 bg-blue-500 rounded-full shrink-0"></div>
-                                                            {sys}
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        ))}
+                                    
+                                    <div className="p-0 overflow-x-auto">
+                                        <table className="min-w-full border-collapse">
+                                            <thead>
+                                                <tr className="bg-slate-50 border-b border-slate-200">
+                                                    <th className="px-6 py-4 text-left text-[10px] font-black text-slate-400 uppercase tracking-widest w-1/3">Sritis (Domenas)</th>
+                                                    <th className="px-6 py-4 text-left text-[10px] font-black text-slate-400 uppercase tracking-widest">Sistema</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="divide-y divide-slate-100">
+                                                {item.subdomains.map((sub, sidx) => (
+                                                    <React.Fragment key={sidx}>
+                                                        {sub.systems.map((sys, sysIdx) => (
+                                                            <tr key={`${sidx}-${sysIdx}`} className="hover:bg-blue-50/20 transition-colors group">
+                                                                <td className="px-6 py-3 align-top">
+                                                                    <div className={`text-[11px] font-extrabold uppercase tracking-tight ${sysIdx === 0 ? 'text-slate-800' : 'text-slate-300'}`}>
+                                                                        {sub.name}
+                                                                    </div>
+                                                                </td>
+                                                                <td className="px-6 py-3">
+                                                                    <div className="flex items-center gap-3">
+                                                                        <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${item.color} opacity-40 group-hover:opacity-100`}></div>
+                                                                        <span className="text-xs font-bold text-slate-700 tracking-tight">{sys}</span>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        ))}
+                                                    </React.Fragment>
+                                                ))}
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </section>
                             ))}
