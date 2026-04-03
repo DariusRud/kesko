@@ -11,9 +11,13 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
         body { font-family: 'Inter', sans-serif; }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900">
+<body class="bg-slate-100 text-slate-900">
     <div id="root"></div>
 
     <script type="text/babel">
@@ -33,7 +37,8 @@
                 layers: <path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.1 6.27a1 1 0 0 0 0 1.83l9.07 4.09a2 2 0 0 0 1.66 0l9.07-4.09a1 1 0 0 0 0-1.83ZM2.1 12.07l9.07 4.09a2 2 0 0 0 1.66 0l9.07-4.09M2.1 16.07l9.07 4.09a2 2 0 0 0-1.66 0l9.07-4.09" />,
                 link: <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />,
                 users: <React.Fragment><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></React.Fragment>,
-                cpu: <React.Fragment><rect width="16" height="16" x="4" y="4" rx="2"/><path d="M9 9h6v6H9zM9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 15h3M1 9h3M1 15h3"/></React.Fragment>
+                cpu: <React.Fragment><rect width="16" height="16" x="4" y="4" rx="2"/><path d="M9 9h6v6H9zM9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 15h3M1 9h3M1 15h3"/></React.Fragment>,
+                lock: <path d="M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zM7 11V7a5 5 0 0 1 10 0v4" />
             };
             return (
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -43,7 +48,23 @@
         };
 
         const App = () => {
+            const [isAuthenticated, setIsAuthenticated] = useState(false);
+            const [password, setPassword] = useState('');
+            const [error, setError] = useState('');
             const [activeEntity, setActiveEntity] = useState('KSL');
+
+            const SECRET_CODE = "1234";
+
+            const handleLogin = (e) => {
+                e.preventDefault();
+                if (password === SECRET_CODE) {
+                    setIsAuthenticated(true);
+                    setError('');
+                } else {
+                    setError('Bandykite dar kartą.');
+                    setPassword('');
+                }
+            };
 
             const mapSystems = (list, defaultTeam = "") => list.map(item => {
                 if (typeof item === 'string') return { name: item, relations: "", comment: "", teamSize: "", itTeam: defaultTeam };
@@ -56,7 +77,6 @@
                 };
             });
 
-            // KSL - Lietuva (KSLT)
             const kslInventory = [
                 {
                     domain: "IT SUPPLYCHAIN (Tiekimas & Produktai)",
@@ -64,16 +84,11 @@
                     icon: "truck",
                     subdomains: [
                         { name: "PIM & Duomenų sodrinimas", systems: mapSystems([
-                            { name: "Aikido (PIM)", relations: "Iš ERP; Publikuoja į Yolandi", comment: "Naudoja Retail Data Entry komanda" },
-                            { name: "Mentum.ai", relations: "Į Aikido", comment: "Aprašymų generavimas ir vertimas" },
-                            { name: "Google Gemini", relations: "Į Aikido", comment: "Automatinis vertimas ir turinys" },
-                            { name: "Rich content providers", relations: "Į Aikido", comment: "Flixmedia, Videoly skaitmeninis turinys" },
-                            { name: "AX Prekių kortelės", relations: "Sodrinama Aikido sistemoje", comment: "ERP Master Data" }
+                            { name: "Aikido (PIM)", relations: "Iš ERP; Publikuoja į Yolandi", comment: "Retail Data Entry įrankis" },
+                            { name: "AX Prekių kortelės", relations: "ERP Master Data", comment: "Branduolys" },
+                            "Instrukcijų sistema", "Prekių ženklinimo lipdukų sistema"
                         ], "IT SUPPLYCHAIN") },
-                        { name: "Kainų valdymas", systems: mapSystems([
-                            { name: "GREP", relations: "Iš Price index; į Yolandi", comment: "Kainų valdymas ir URMAS B2B lojalumas" },
-                            { name: "AX Pardavimų kainodara", relations: "Iš GREP", comment: "Bazinės kainos" }
-                        ], "IT SUPPLYCHAIN") }
+                        { name: "Kainų valdymas", systems: mapSystems([{ name: "GREP", relations: "Į Yolandi", comment: "Kainodara" }], "IT SUPPLYCHAIN") }
                     ]
                 },
                 {
@@ -82,71 +97,62 @@
                     icon: "package",
                     subdomains: [
                         { name: "Užsakymų vykdymas", systems: mapSystems([
-                            { name: "Yolandi (Homebrew ERP)", relations: "Gauna korteles iš Aikido", comment: "Fulfillment, Purchasing, Operations" },
-                            { name: "Cerberus", relations: "Iš Yolandi", comment: "Parduotuvių darbuotojų įrankis" },
-                            { name: "OMS", relations: "Integracija su Yolandi", comment: "Užsakymų orkestravimas" }
+                            { name: "Yolandi", relations: "Centrinė ERP", comment: "Commerce, Order Mgmt" },
+                            { name: "Cerberus", relations: "Iš Yolandi", comment: "Operacijos parduotuvėse" }
                         ], "IT SUPPLYCHAIN") }
-                    ]
-                },
-                {
-                    domain: "CRM & LOJALUMAS",
-                    color: "bg-slate-700",
-                    icon: "wallet",
-                    subdomains: [
-                        { name: "Klientų valdymas", systems: mapSystems([
-                            { name: "Salesforce Service Cloud", relations: "Customer Support CRM", comment: "Sinchronizuojasi su Marketing Cloud" },
-                            { name: "Loyalty (Middleware)", relations: "KSLT <-> Zinrelo", comment: "Lojalumo kortelių valdymas" },
-                            { name: "Zinrelo", relations: "Iš Loyalty", comment: "Lojalumo platforma" }
-                        ], "IT SUPPORT") }
                     ]
                 }
             ];
 
-            // KSD - Digital
             const ksdInventory = [
                 {
                     domain: "KSD SALES & CONTENT",
                     color: "bg-cyan-600",
                     icon: "layout",
                     subdomains: [
-                        { name: "Pardavimų šerdis", systems: mapSystems([
-                            { name: "Elfas", relations: "Central sales channel", comment: "Naudoja Marketing content managers" },
-                            { name: "Sales Frontend (CX)", relations: "Per Digital Hub", comment: "Vartotojo sąsaja" }
-                        ], "IT KSD / DIGITAL") },
-                        { name: "Turinio valdymas", systems: mapSystems([
-                            { name: "Contentful (CMS)", relations: "Į Elfą / Web", comment: "Marketing managers turinio įrankis" },
-                            "Cloudinary (DAM)"
-                        ], "IT KSD / DIGITAL") }
-                    ]
-                },
-                {
-                    domain: "KSD MARKETING & DATA",
-                    color: "bg-amber-600",
-                    icon: "users",
-                    subdomains: [
-                        { name: "Rinkodaros automatizavimas", systems: mapSystems([
-                            { name: "Salesforce Marketing Cloud", relations: "Sinchronizuoja sutikimus su Service Cloud", comment: "Email marketing specialistams" },
-                            { name: "Lead generation", relations: "Feed'ai į Elfą", comment: "kaina24.lt, kurpirkti.lv ir kt." }
-                        ], "IT KSD / DIGITAL") }
-                    ]
-                },
-                {
-                    domain: "KSD INTEGRATION",
-                    color: "bg-orange-500",
-                    icon: "zap",
-                    subdomains: [
-                        { name: "Duomenų magistralė", systems: mapSystems([
-                            { name: "Digital Hub (Mulesoft)", relations: "Centrinė jungtis", comment: "API sluoksnis" }
+                        { name: "Pardavimų kanalai", systems: mapSystems([
+                            { name: "Elfas", relations: "Centrinis kanalas", comment: "Backend" },
+                            { name: "Sales Frontend (CX)", relations: "Web portalas", comment: "UI" }
                         ], "IT KSD / DIGITAL") }
                     ]
                 }
             ];
 
-            const kslvInventory = kslInventory.map(d => ({...d, subdomains: d.subdomains.map(s => ({...s, systems: mapSystems([{name: "Reikia informacijos"}], "Reikia informacijos") }))}));
-            const kseeInventory = kslInventory.map(d => ({...d, subdomains: d.subdomains.map(s => ({...s, systems: mapSystems([{name: "Reikia informacijos"}], "Reikia informacijos") }))}));
-
-            const inventoryMap = { KSL: kslInventory, KSD: ksdInventory, KSLV: kslvInventory, KSEE: kseeInventory };
+            const inventoryMap = { KSL: kslInventory, KSD: ksdInventory, KSLV: [], KSEE: [] };
             const currentInventory = inventoryMap[activeEntity] || [];
+
+            if (!isAuthenticated) {
+                return (
+                    <div className="min-h-screen flex items-center justify-center bg-slate-100 p-4">
+                        <div className="max-w-sm w-full glass-effect p-8 rounded-3xl shadow-xl border border-white">
+                            <div className="mb-6 text-center">
+                                <div className="w-12 h-12 bg-blue-600 text-white rounded-xl flex items-center justify-center mx-auto mb-4 shadow-md">
+                                    <Icon name="lock" className="w-6 h-6" />
+                                </div>
+                                <h1 className="text-xl font-black text-slate-800 uppercase tracking-tighter">Prieiga</h1>
+                            </div>
+
+                            <form onSubmit={handleLogin} className="space-y-4">
+                                <input 
+                                    type="password" 
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    placeholder="Kodas"
+                                    className="w-full px-5 py-3 bg-slate-50 border-2 border-slate-200 rounded-xl focus:border-blue-500 focus:outline-none transition-all font-bold text-center tracking-widest"
+                                    autoFocus
+                                />
+                                {error && <p className="text-red-500 text-[10px] font-bold text-center uppercase tracking-wide">{error}</p>}
+                                <button 
+                                    type="submit"
+                                    className="w-full bg-blue-600 text-white py-3 rounded-xl font-black uppercase tracking-widest hover:bg-blue-700 shadow-md transition-all active:scale-95 text-sm"
+                                >
+                                    Prisijungti
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                );
+            }
 
             return (
                 <div className="min-h-screen p-4 md:p-8">
@@ -158,95 +164,56 @@
                                         key={entity}
                                         onClick={() => setActiveEntity(entity)}
                                         className={`px-6 py-2.5 rounded-xl font-black text-sm transition-all ${
-                                            activeEntity === entity 
-                                            ? 'bg-blue-600 text-white shadow-md shadow-blue-200' 
-                                            : 'text-slate-400 hover:bg-slate-100'
+                                            activeEntity === entity ? 'bg-blue-600 text-white' : 'text-slate-400 hover:bg-slate-100'
                                         }`}
                                     >
                                         {entity}
                                     </button>
                                 ))}
                             </div>
-                            <div className="px-4 py-2 text-xs font-bold text-slate-400 uppercase tracking-widest hidden md:block">
-                                IT Sistemų Inventorizacija (AS-IS)
-                            </div>
                         </header>
 
-                        <div className="mb-8">
+                        <div className="mb-8 flex justify-between items-end">
                             <h1 className="text-3xl font-black uppercase tracking-tighter text-slate-800">
-                                {activeEntity} IT Sistemų Inventorizacija
+                                {activeEntity} Inventorizacija
                             </h1>
-                            <p className="text-slate-500 text-sm font-medium italic">
-                                {activeEntity === 'KSL' && 'Kesko Senukai Lithuania (KSLT / Retail / Backend)'}
-                                {activeEntity === 'KSD' && 'Kesko Senukai Digital (Ecommerce / Marketing)'}
-                                {activeEntity === 'KSLV' && 'Kesko Senukai Latvia'}
-                                {activeEntity === 'KSEE' && 'Kesko Senukai Estonia'}
-                            </p>
+                            <button onClick={() => setIsAuthenticated(false)} className="text-[10px] font-black text-slate-300 uppercase hover:text-red-500">
+                                Atsijungti
+                            </button>
                         </div>
 
                         <div className="space-y-12">
-                            {currentInventory.map((item, idx) => (
+                            {currentInventory.length > 0 ? currentInventory.map((item, idx) => (
                                 <section key={idx} className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
                                     <div className={`${item.color} p-4 text-white flex items-center gap-3`}>
-                                        <div className="p-2 bg-white/20 rounded-lg">
-                                            <Icon name={item.icon} className="w-5 h-5" />
-                                        </div>
+                                        <Icon name={item.icon} className="w-5 h-5" />
                                         <h2 className="font-black uppercase text-sm tracking-wide">{item.domain}</h2>
                                     </div>
-                                    
                                     <div className="p-0 overflow-x-auto">
                                         <table className="min-w-full border-collapse">
                                             <thead>
                                                 <tr className="bg-slate-50 border-b border-slate-200">
-                                                    <th className="px-4 py-4 text-left text-[10px] font-black text-slate-400 uppercase tracking-widest w-[14%]">Sritis (Domenas)</th>
+                                                    <th className="px-4 py-4 text-left text-[10px] font-black text-slate-400 uppercase tracking-widest w-[14%]">Sritis</th>
                                                     <th className="px-4 py-4 text-left text-[10px] font-black text-slate-400 uppercase tracking-widest w-[14%]">Sistema</th>
                                                     <th className="px-4 py-4 text-left text-[10px] font-black text-slate-400 uppercase tracking-widest w-[14%] text-center">IT Komanda</th>
-                                                    <th className="px-4 py-4 text-left text-[10px] font-black text-slate-400 uppercase tracking-widest w-[8%] text-center">Komandos dydis</th>
-                                                    <th className="px-4 py-4 text-left text-[10px] font-black text-slate-400 uppercase tracking-widest w-[18%]">Ryšiai (Integracijos)</th>
-                                                    <th className="px-4 py-4 text-left text-[10px] font-black text-slate-400 uppercase tracking-widest">Komentaras (Vartotojai / Paskirtis)</th>
+                                                    <th className="px-4 py-4 text-left text-[10px] font-black text-slate-400 uppercase tracking-widest w-[8%] text-center">Dydis</th>
+                                                    <th className="px-4 py-4 text-left text-[10px] font-black text-slate-400 uppercase tracking-widest w-[18%]">Ryšiai</th>
+                                                    <th className="px-4 py-4 text-left text-[10px] font-black text-slate-400 uppercase tracking-widest">Komentaras</th>
                                                 </tr>
                                             </thead>
                                             <tbody className="divide-y divide-slate-100">
                                                 {item.subdomains.map((sub, sidx) => (
                                                     <React.Fragment key={sidx}>
                                                         {sub.systems.map((sysObj, sysIdx) => (
-                                                            <tr key={`${sidx}-${sysIdx}`} className="hover:bg-blue-50/20 transition-colors group">
-                                                                <td className="px-4 py-3 align-top border-r border-slate-50">
-                                                                    <div className={`text-[10px] font-extrabold uppercase tracking-tight ${sysIdx === 0 ? 'text-slate-800' : 'text-slate-300'}`}>
-                                                                        {sub.name}
-                                                                    </div>
+                                                            <tr key={`${sidx}-${sysIdx}`} className="hover:bg-blue-50/20 transition-colors">
+                                                                <td className="px-4 py-3 align-top text-[10px] font-extrabold uppercase text-slate-800">{sysIdx === 0 ? sub.name : ''}</td>
+                                                                <td className="px-4 py-3 align-top text-[11px] font-bold text-slate-700">{sysObj.name}</td>
+                                                                <td className="px-4 py-3 align-top text-center">
+                                                                    <span className="px-2 py-0.5 bg-slate-50 rounded text-[9px] font-black text-slate-500 border border-slate-200 uppercase">{sysObj.itTeam || "—"}</span>
                                                                 </td>
-                                                                <td className="px-4 py-3 align-top border-r border-slate-50">
-                                                                    <div className="flex items-center gap-2">
-                                                                        <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${item.color} opacity-40 group-hover:opacity-100`}></div>
-                                                                        <span className={`text-[11px] font-bold tracking-tight ${sysObj.name === 'Reikia informacijos' ? 'text-red-600 font-black italic underline' : 'text-slate-700'}`}>
-                                                                            {sysObj.name}
-                                                                        </span>
-                                                                    </div>
-                                                                </td>
-                                                                <td className="px-4 py-3 align-top border-r border-slate-50 text-center">
-                                                                    <div className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[9px] font-black border uppercase transition-colors ${sysObj.itTeam === 'Reikia informacijos' ? 'bg-red-50 text-red-600 border-red-200 italic underline' : 'bg-slate-50 text-slate-500 border-slate-200'}`}>
-                                                                        <Icon name="cpu" className={`w-2.5 h-2.5 ${sysObj.itTeam === 'Reikia informacijos' ? 'text-red-500' : ''}`} />
-                                                                        {sysObj.itTeam || "—"}
-                                                                    </div>
-                                                                </td>
-                                                                <td className="px-4 py-3 align-top border-r border-slate-50 text-center">
-                                                                    <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-100 rounded-full text-[10px] font-black text-slate-500 border border-slate-200">
-                                                                        <Icon name="users" className="w-3 h-3" />
-                                                                        {sysObj.teamSize || "—"}
-                                                                    </div>
-                                                                </td>
-                                                                <td className="px-4 py-3 align-top border-r border-slate-50">
-                                                                    <div className="flex items-center gap-1.5 text-[10px] text-blue-600 font-bold bg-blue-50/40 p-1.5 rounded border border-blue-100">
-                                                                        {sysObj.relations && <Icon name="link" className="w-2.5 h-2.5 shrink-0" />}
-                                                                        {sysObj.relations || ""}
-                                                                    </div>
-                                                                </td>
-                                                                <td className="px-4 py-3 align-top">
-                                                                    <div className="text-[10px] text-slate-500 italic leading-tight">
-                                                                        {sysObj.comment || ""}
-                                                                    </div>
-                                                                </td>
+                                                                <td className="px-4 py-3 align-top text-center text-[10px] font-black text-slate-500">{sysObj.teamSize || "—"}</td>
+                                                                <td className="px-4 py-3 align-top text-[10px] text-blue-600 font-bold bg-blue-50/40">{sysObj.relations || ""}</td>
+                                                                <td className="px-4 py-3 align-top text-[10px] text-slate-500 italic">{sysObj.comment || ""}</td>
                                                             </tr>
                                                         ))}
                                                     </React.Fragment>
@@ -255,11 +222,15 @@
                                         </table>
                                     </div>
                                 </section>
-                            ))}
+                            )) : (
+                                <div className="py-20 text-center bg-white rounded-2xl border-2 border-dashed border-slate-200 uppercase text-[10px] font-black text-slate-300 tracking-widest">
+                                    Informacija pildoma
+                                </div>
+                            )}
                         </div>
 
                         <footer className="mt-16 text-center text-[10px] text-slate-300 font-bold uppercase tracking-[0.5em] py-8 border-t border-slate-100">
-                            Kesko Senukai Architecture Group | AS-IS Inventorizacija
+                            Kesko Senukai Architecture Group
                         </footer>
                     </div>
                 </div>
