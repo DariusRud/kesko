@@ -45,7 +45,6 @@
         const App = () => {
             const [activeEntity, setActiveEntity] = useState('KSL');
 
-            // Pagalbinė funkcija objektų kūrimui su komanda
             const mapSystems = (list, defaultTeam = "") => list.map(item => {
                 if (typeof item === 'string') return { name: item, relations: "", comment: "", teamSize: "", itTeam: defaultTeam };
                 return { 
@@ -57,7 +56,6 @@
                 };
             });
 
-            // KSL - Lietuva
             const kslInventory = [
                 {
                     domain: "IT SUPPLYCHAIN (Tiekimas)",
@@ -65,84 +63,90 @@
                     icon: "truck",
                     subdomains: [
                         { name: "Prekių kortelės (normatyvai)", systems: mapSystems([
-                            { name: "AX Prekių kortelės", relations: "Šaltinis PIM sistemai", comment: "Pagrindinė ERP dalis" },
-                            "Instrukcijų sistema", "Prekių ženklinimo lipdukų sistema", "AX sertifikatai", "Sertifikatų programa", "AX Atlas", "Aikido integracija"
+                            { name: "AX Prekių kortelės", relations: "Šaltinis Akeneo PIM", comment: "ERP Master Data" },
+                            "Instrukcijų sistema", "Prekių ženklinimo lipdukų sistema", "AX sertifikatai", "AX Atlas"
                         ], "IT SUPPLYCHAIN") },
-                        { name: "Asortimento valdymas", systems: mapSystems(["AVS"], "IT SUPPLYCHAIN") },
-                        { name: "Tiekėjai, sutartys", systems: mapSystems(["AX Tiekėjų kortelės", "AX Tiekėjų sutarčių valdymas", "SSK: Tiekimo sutarčių sąlygų sekimo kontrolė"], "IT SUPPLYCHAIN") },
-                        { name: "Prekių tiekimas & Atsargos", systems: mapSystems(["Cross-docking", "KANBAN", "AX Pirkimų užsakymai", "AX Perkėlimo užsakymai", "AX Atsargų valdymas", "GPAIS"], "IT SUPPLYCHAIN") }
+                        { name: "Kainodara", systems: mapSystems([
+                            { name: "GREP", relations: "Iš Price comparison providers", comment: "Kainų valdymo sistema" },
+                            { name: "AX LT Pardavimų kainodara", relations: "Iš GREP", comment: "Pardavimo kainų bazė" }
+                        ], "IT SUPPLYCHAIN") }
                     ]
                 },
                 {
-                    domain: "LOGISTIKA (Transportas & Sandėliai)",
+                    domain: "LOGISTIKA & OPERATIONS",
                     color: "bg-indigo-600",
                     icon: "package",
                     subdomains: [
-                        { name: "Sandėlių valdymas", systems: mapSystems(["Sandėlių valdymo sistemos (SVS JDA)", "3PL SVS integracijos", "Aikštelių valdymo sistema (AVP)", "Kiemo valdymo sistema (Fleet Complet)"], "IT SUPPLYCHAIN") },
-                        { name: "Logistika (transportas)", systems: mapSystems(["Transporto maršrutizavimas (TMS)", "Logixis", "Kurjerių valdymo sistema", "IVAZ"], "IT SUPPLYCHAIN") }
+                        { name: "Užsakymų valdymas", systems: mapSystems([
+                            { name: "Yolandi", relations: "Visi pardavimo kanalai", comment: "Homebrew ERP (Commerce, Orders, Ops)" },
+                            { name: "OMS", relations: "Integracija su Yolandi", comment: "Užsakymų orkestravimas" }
+                        ], "IT SUPPLYCHAIN") },
+                        { name: "Sandėliai & Parduotuvės", systems: mapSystems([
+                            { name: "Cerberus", relations: "Iš Yolandi", comment: "Picking, packing, collection, shipments" },
+                            { name: "Courier services", relations: "Integracija su Yolandi", comment: "Parcel terminal lookup" }
+                        ], "IT SUPPLYCHAIN") }
                     ]
                 },
                 {
-                    domain: "IT HOSALES (B2B & Pardavimai)",
-                    color: "bg-green-600",
-                    icon: "shopping",
-                    subdomains: [
-                        { name: "B2B Pardavimai", systems: mapSystems(["AX Pardavimų modulis", "AX Tiesioginis pristatymas", "ESF programa", "KOMPAS", "EDI Pardavimai", "CRM", "SABIS"], "IT HOSALES") },
-                        { name: "Kainodara & Akcijos", systems: mapSystems(["AX LT Pardavimų kainodara", "AX Akcijų valdymas", "Dovanų kortelės"], "IT HOSALES") }
-                    ]
-                },
-                {
-                    domain: "IT SHOP (Mažmena & POS)",
-                    color: "bg-orange-600",
-                    icon: "globe",
-                    subdomains: [
-                        { name: "Pardavimai mažmenoje", systems: mapSystems(["RASO POS", "FP Rivilės POS", "DUV", "WORKOFO", "Kainoženklių programa"], "IT SHOP") },
-                        { name: "Paslaugos klientams", systems: mapSystems(["Įrankių nuomos sistema", "Lizingas", "ESF savitarnos terminalas MP"], "IT SHOP") }
-                    ]
-                },
-                {
-                    domain: "IT SUPPORT (Finansai & HR)",
+                    domain: "IT SUPPORT (Finansai & Lojalumas)",
                     color: "bg-slate-700",
                     icon: "wallet",
                     subdomains: [
-                        { name: "Finansai & Apskaita", systems: mapSystems(["AX Finansai", "Rivilė: Biudžetai", "AX Ilgalaikis turtas", "Bank Gateways", "Intrastat / PVM / ISAF"], "IT SUPPORT") },
-                        { name: "HR & Analitika", systems: mapSystems(["Kadrai", "Rivilė: Algos", "TeamTailor / SPAIS", "Moodle", "Qlik Sense (BI)", "DocLogix", "iTOP"], "IT SUPPORT") }
+                        { name: "Klientai & Lojalumas", systems: mapSystems([
+                            { name: "Loyalty (Middleware)", relations: "KSLT <-> Zinrelo", comment: "Lojalumo kortelių valdymas" },
+                            { name: "Zinrelo", relations: "Iš Loyalty", comment: "Lojalumo platforma" },
+                            { name: "Rivilė", relations: "Loyalty modulis", comment: "Senoji ERP (keičiama į AX)" }
+                        ], "IT SUPPORT") }
                     ]
                 }
             ];
 
-            // KSD - Digital
             const ksdInventory = [
                 {
                     domain: "KSD SALES & EXPERIENCE",
                     color: "bg-cyan-600",
                     icon: "layout",
                     subdomains: [
-                        { name: "Front-end & CMS", systems: mapSystems(["Next.js Web Platform", "Contentful (CMS)"], "IT KSD / DIGITAL") },
-                        { name: "Klientas & Lojalumas", systems: mapSystems(["Customer Hub", "Lojalumo sistema (Loyalty)"], "IT KSD / DIGITAL") }
+                        { name: "Front-end kanalai", systems: mapSystems([
+                            { name: "Sales Frontend (CX)", relations: "Per Digital Hub", comment: "Naujasis web" },
+                            { name: "iOS App", relations: "Per Digital Hub", comment: "Mobilioji programėlė" },
+                            { name: "Android App", relations: "Per Digital Hub", comment: "Mobilioji programėlė" }
+                        ], "IT KSD / DIGITAL") },
+                        { name: "Patirties gerinimas", systems: mapSystems([
+                            { name: "SearchNode", relations: "Paieškos funkcija", comment: "Paieškos servisas" },
+                            { name: "BitRec", relations: "Rekomendacijos", comment: "Produktų rekomendacijos" },
+                            { name: "ip2location.com", relations: "Geolocation data", comment: "IP vietos nustatymas" },
+                            { name: "Price comparison providers", relations: "Feed'ai į GREP", comment: "Konkurentų kainų stebėjimas" }
+                        ], "IT KSD / DIGITAL") }
                     ]
                 },
                 {
-                    domain: "KSD OPERATIONS",
-                    color: "bg-emerald-600",
-                    icon: "package",
-                    subdomains: [
-                        { name: "Užsakymai", systems: mapSystems(["OMS", "Elfas"], "IT KSD / DIGITAL") }
-                    ]
-                },
-                {
-                    domain: "KSD MIDDLEWARE",
-                    color: "bg-amber-600",
+                    domain: "KSD COMMERCE CORE",
+                    color: "bg-purple-600",
                     icon: "zap",
                     subdomains: [
-                        { name: "Integracija", systems: mapSystems(["Digital Hub"], "IT KSD / DIGITAL") }
+                        { name: "Komercijos variklis", systems: mapSystems([
+                            { name: "ElasticPath", relations: "Šerdis <-> Digital Hub", comment: "Commerce Engine" },
+                            { name: "Contentful (CMS)", relations: "Iš Cloudinary", comment: "Turinio valdymas" }
+                        ], "IT KSD / DIGITAL") }
+                    ]
+                },
+                {
+                    domain: "KSD DATA & MARKETING",
+                    color: "bg-amber-600",
+                    icon: "users",
+                    subdomains: [
+                        { name: "CRM & Marketing", systems: mapSystems([
+                            { name: "Salesforce Marketing Cloud", relations: "Iš Zinrelo / Hub", comment: "Marketingo automatizavimas" },
+                            { name: "Salesforce Service Cloud", relations: "Customer Support", comment: "Klientų aptarnavimas" },
+                            { name: "Lead generation", relations: "Marketingo kampanijos", comment: "Potencialių klientų paieška" }
+                        ], "IT KSD / DIGITAL") }
                     ]
                 }
             ];
 
-            // LV / EE karkasai
-            const kslvInventory = kslInventory.map(d => ({...d, subdomains: d.subdomains.map(s => ({...s, systems: mapSystems(["Informacija bus pildoma..."], "IT ŠALIŲ BRANDUOLYS") }))}));
-            const kseeInventory = kslInventory.map(d => ({...d, subdomains: d.subdomains.map(s => ({...s, systems: mapSystems(["Informacija bus pildoma..."], "IT ŠALIŲ BRANDUOLYS") }))}));
+            const kslvInventory = kslInventory.map(d => ({...d, subdomains: d.subdomains.map(s => ({...s, systems: mapSystems(["Reikia informacijos"], "Reikia informacijos") }))}));
+            const kseeInventory = kslInventory.map(d => ({...d, subdomains: d.subdomains.map(s => ({...s, systems: mapSystems(["Reikia informacijos"], "Reikia informacijos") }))}));
 
             const inventoryMap = { KSL: kslInventory, KSD: ksdInventory, KSLV: kslvInventory, KSEE: kseeInventory };
             const currentInventory = inventoryMap[activeEntity] || [];
@@ -176,10 +180,10 @@
                                 {activeEntity} IT Sistemų Inventorizacija
                             </h1>
                             <p className="text-slate-500 text-sm font-medium italic">
-                                {activeEntity === 'KSL' && 'Kesko Senukai Lithuania'}
+                                {activeEntity === 'KSL' && 'Kesko Senukai Lithuania (KSLT)'}
                                 {activeEntity === 'KSD' && 'Kesko Senukai Digital'}
                                 {activeEntity === 'KSLV' && 'Kesko Senukai Latvia'}
-                                {activeEntity === 'KSEE' && 'Kesko Senukai Estonia (K-Rauta)'}
+                                {activeEntity === 'KSEE' && 'Kesko Senukai Estonia'}
                             </p>
                         </div>
 
@@ -218,12 +222,14 @@
                                                                 <td className="px-4 py-3 align-top border-r border-slate-50">
                                                                     <div className="flex items-center gap-2">
                                                                         <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${item.color} opacity-40 group-hover:opacity-100`}></div>
-                                                                        <span className="text-[11px] font-bold text-slate-700 tracking-tight">{sysObj.name}</span>
+                                                                        <span className={`text-[11px] font-bold tracking-tight ${sysObj.name === 'Reikia informacijos' ? 'text-red-600 font-black italic underline' : 'text-slate-700'}`}>
+                                                                            {sysObj.name}
+                                                                        </span>
                                                                     </div>
                                                                 </td>
                                                                 <td className="px-4 py-3 align-top border-r border-slate-50 text-center">
-                                                                    <div className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-slate-50 rounded text-[9px] font-black text-slate-500 border border-slate-200 uppercase">
-                                                                        <Icon name="cpu" className="w-2.5 h-2.5" />
+                                                                    <div className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[9px] font-black border uppercase transition-colors ${sysObj.itTeam === 'Reikia informacijos' ? 'bg-red-50 text-red-600 border-red-200 italic underline' : 'bg-slate-50 text-slate-500 border-slate-200'}`}>
+                                                                        <Icon name="cpu" className={`w-2.5 h-2.5 ${sysObj.itTeam === 'Reikia informacijos' ? 'text-red-500' : ''}`} />
                                                                         {sysObj.itTeam || "—"}
                                                                     </div>
                                                                 </td>
