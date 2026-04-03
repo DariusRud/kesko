@@ -59,18 +59,20 @@
             // KSL - Lietuva (KSLT)
             const kslInventory = [
                 {
-                    domain: "IT SUPPLYCHAIN (Tiekimas & Kainodara)",
+                    domain: "IT SUPPLYCHAIN (Tiekimas & Produktai)",
                     color: "bg-blue-600",
                     icon: "truck",
                     subdomains: [
-                        { name: "Prekių Master Data", systems: mapSystems([
-                            { name: "AX Prekių kortelės", relations: "Išorinis šaltinis PIM", comment: "ERP bazė visoms šalims" },
-                            "Instrukcijų sistema", "Prekių ženklinimo lipdukų sistema"
+                        { name: "PIM & Duomenų sodrinimas", systems: mapSystems([
+                            { name: "Aikido (PIM)", relations: "Iš ERP; Publikuoja į Yolandi", comment: "Naudoja Retail Data Entry komanda" },
+                            { name: "Mentum.ai", relations: "Į Aikido", comment: "Aprašymų generavimas ir vertimas" },
+                            { name: "Google Gemini", relations: "Į Aikido", comment: "Automatinis vertimas ir turinys" },
+                            { name: "Rich content providers", relations: "Į Aikido", comment: "Flixmedia, Videoly skaitmeninis turinys" },
+                            { name: "AX Prekių kortelės", relations: "Sodrinama Aikido sistemoje", comment: "ERP Master Data" }
                         ], "IT SUPPLYCHAIN") },
                         { name: "Kainų valdymas", systems: mapSystems([
-                            { name: "GREP", relations: "Paima PriceIndex; siunčia į Yolandi", comment: "Kainodaros specialistų įrankis" },
-                            { name: "AX Pardavimų kainodara", relations: "Iš GREP", comment: "Bazinės pardavimo kainos" },
-                            { name: "Price comparison providers", relations: "Feed'ai į GREP", comment: "Kaina24.lt ir kt. duomenys" }
+                            { name: "GREP", relations: "Iš Price index; į Yolandi", comment: "Kainų valdymas ir URMAS B2B lojalumas" },
+                            { name: "AX Pardavimų kainodara", relations: "Iš GREP", comment: "Bazinės kainos" }
                         ], "IT SUPPLYCHAIN") }
                     ]
                 },
@@ -80,9 +82,9 @@
                     icon: "package",
                     subdomains: [
                         { name: "Užsakymų vykdymas", systems: mapSystems([
-                            { name: "Yolandi (Homebrew ERP)", relations: "Orkestruoja užsakymus visoms šalims", comment: "Commerce, Order Mgmt, Operations" },
-                            { name: "Cerberus", relations: "Integracija su Yolandi", comment: "Parduotuvių darbuotojų įrankis" },
-                            { name: "OMS", relations: "Integracija su Yolandi", comment: "Užsakymų maršrutizavimas" }
+                            { name: "Yolandi (Homebrew ERP)", relations: "Gauna korteles iš Aikido", comment: "Fulfillment, Purchasing, Operations" },
+                            { name: "Cerberus", relations: "Iš Yolandi", comment: "Parduotuvių darbuotojų įrankis" },
+                            { name: "OMS", relations: "Integracija su Yolandi", comment: "Užsakymų orkestravimas" }
                         ], "IT SUPPLYCHAIN") }
                     ]
                 },
@@ -92,10 +94,9 @@
                     icon: "wallet",
                     subdomains: [
                         { name: "Klientų valdymas", systems: mapSystems([
-                            { name: "Salesforce Service Cloud", relations: "Iš Yolandi", comment: "Pagrindinis Klientų aptarnavimo CRM" },
-                            { name: "Loyalty (Middleware)", relations: "Tiltas KSLT <-> Zinrelo", comment: "Lojalumo kortelių valdymas" },
-                            { name: "Zinrelo", relations: "Sinchronizuojasi su SF Marketing Cloud", comment: "Lojalumo kampanijų valdymas" },
-                            { name: "[KSLT] Loyalty (Rivilė)", relations: "Iš Elfas", comment: "Taškų tikrinimo modulis" }
+                            { name: "Salesforce Service Cloud", relations: "Customer Support CRM", comment: "Sinchronizuojasi su Marketing Cloud" },
+                            { name: "Loyalty (Middleware)", relations: "KSLT <-> Zinrelo", comment: "Lojalumo kortelių valdymas" },
+                            { name: "Zinrelo", relations: "Iš Loyalty", comment: "Lojalumo platforma" }
                         ], "IT SUPPORT") }
                     ]
                 }
@@ -109,9 +110,8 @@
                     icon: "layout",
                     subdomains: [
                         { name: "Pardavimų šerdis", systems: mapSystems([
-                            { name: "Elfas", relations: "Backend'as visiems kanalams", comment: "Central sales channel (Web/Mobile)" },
-                            { name: "Sales Frontend (CX)", relations: "Per Digital Hub -> Elfas", comment: "Naujasis web dizainas" },
-                            { name: "iOS / Android Apps", relations: "Per Elfas API", comment: "Mobiliosios programėlės" }
+                            { name: "Elfas", relations: "Central sales channel", comment: "Naudoja Marketing content managers" },
+                            { name: "Sales Frontend (CX)", relations: "Per Digital Hub", comment: "Vartotojo sąsaja" }
                         ], "IT KSD / DIGITAL") },
                         { name: "Turinio valdymas", systems: mapSystems([
                             { name: "Contentful (CMS)", relations: "Į Elfą / Web", comment: "Marketing managers turinio įrankis" },
@@ -125,11 +125,8 @@
                     icon: "users",
                     subdomains: [
                         { name: "Rinkodaros automatizavimas", systems: mapSystems([
-                            { name: "Salesforce Marketing Cloud", relations: "Sinchronizuojasi su Service Cloud", comment: "Email marketing specialistų įrankis" },
-                            { name: "Lead generation", relations: "Feed'ai į Elfą", comment: "Kaina24.lt, Kurpirkti.lv, Hind.ee" }
-                        ], "IT KSD / DIGITAL") },
-                        { name: "Svetainės intelektas", systems: mapSystems([
-                            "SearchNode (Paieška)", "BitRec (Rekomendacijos)", "ip2location (Geolokacija)"
+                            { name: "Salesforce Marketing Cloud", relations: "Sinchronizuoja sutikimus su Service Cloud", comment: "Email marketing specialistams" },
+                            { name: "Lead generation", relations: "Feed'ai į Elfą", comment: "kaina24.lt, kurpirkti.lv ir kt." }
                         ], "IT KSD / DIGITAL") }
                     ]
                 },
@@ -139,7 +136,7 @@
                     icon: "zap",
                     subdomains: [
                         { name: "Duomenų magistralė", systems: mapSystems([
-                            { name: "Digital Hub (Mulesoft)", relations: "Jungia KSD su šalių ERP (AX)", comment: "API sluoksnis" }
+                            { name: "Digital Hub (Mulesoft)", relations: "Centrinė jungtis", comment: "API sluoksnis" }
                         ], "IT KSD / DIGITAL") }
                     ]
                 }
